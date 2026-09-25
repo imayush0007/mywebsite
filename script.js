@@ -320,14 +320,11 @@ function toggleTheme() {
 
 }
 
-// ---------- CONTACT FORM (GITHUB PAGES FIXED) ----------
-// ---------- CONTACT FORM (RENDER BACKEND LIVE) ----------
+// ---------- CONTACT FORM (RENDER LIVE) ----------
 const form = document.getElementById("contact-form");
 
 if (form) {
-
   form.addEventListener("submit", async function (e) {
-
     e.preventDefault();
 
     const data = {
@@ -342,34 +339,28 @@ if (form) {
     }
 
     try {
+      const response = await fetch("https://ayush-ai-backend.onrender.com/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
 
-      const response = await fetch(
-        "https://ayush-ai-backend.onrender.com/contact",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        }
-      );
+      const result = await response.json();
 
       if (response.ok) {
-        alert("✅ Message Sent Successfully!");
+        alert("✅ " + result.message);
         form.reset();
       } else {
         alert("❌ Failed to send message.");
       }
 
-    } catch (err) {
-
-      console.error(err);
-      alert("⚠️ Server is temporarily unavailable. Please try again.");
-
+    } catch (error) {
+      console.error(error);
+      alert("❌ Connection Error. Please try again.");
     }
-
   });
-
 }
 // ---------- MUSIC ----------
 let playing = false;
