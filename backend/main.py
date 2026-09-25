@@ -101,3 +101,9 @@ def delete_message(message_id: int):
         "status": "success",
         "message": "Message Deleted Successfully!"
     }
+
+from fastapi.responses import FileResponse
+
+@app.get("/dashboard")
+def dashboard():
+    return FileResponse("dashboard.html")
