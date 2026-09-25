@@ -1,35 +1,48 @@
+# ==========================================
+# AYUSH RAI AI PORTFOLIO BACKEND (RENDER LIVE)
+# ==========================================
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from database import cursor, conn
+from database import conn
 
-app = FastAPI()
+app = FastAPI(title="Ayush AI Portfolio Backend")
 
+# ---------- CORS ----------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://imayush0007.github.io",
+        "http://127.0.0.1:5500",
+        "http://localhost:5500"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# ---------- Contact Model ----------
 class Contact(BaseModel):
     name: str
     email: str
     message: str
 
 
+# ---------- Home ----------
 @app.get("/")
 def home():
     return {
-        "message": "Welcome to Ayush Rai Portfolio Backend 🚀"
+        "status": "success",
+        "message": "Welcome to Ayush Rai AI Portfolio Backend 🚀"
     }
 
 
+# ---------- Save Contact ----------
 @app.post("/contact")
 def save_contact(contact: Contact):
 
-    print("NEW MESSAGE:", contact.name, contact.email)
+    cursor = conn.cursor()
 
     cursor.execute(
         "INSERT INTO contacts(name,email,message) VALUES(?,?,?)",
@@ -37,49 +50,54 @@ def save_contact(contact: Contact):
     )
 
     conn.commit()
+    cursor.close()
 
     return {
+        "status": "success",
         "message": "Message Saved Successfully!"
     }
 
 
+# ---------- Get Messages ----------
 @app.get("/messages")
 def get_messages():
 
-    new_cursor = conn.cursor()   # Naya cursor banao
+    cursor = conn.cursor()
 
-    new_cursor.execute(
+    cursor.execute(
         "SELECT id, name, email, message FROM contacts ORDER BY id DESC"
     )
 
-    rows = new_cursor.fetchall()
+    rows = cursor.fetchall()
 
-    messages = []
+    cursor.close()
 
-    for row in rows:
-        messages.append({
+    return [
+        {
             "id": row[0],
             "name": row[1],
             "email": row[2],
             "message": row[3]
-        })
+        }
+        for row in rows
+    ]
 
-    new_cursor.close()   # Cursor close karo
 
-    return messages
+# ---------- Delete Message ----------
 @app.delete("/delete/{message_id}")
 def delete_message(message_id: int):
 
-    new_cursor = conn.cursor()
+    cursor = conn.cursor()
 
-    new_cursor.execute(
+    cursor.execute(
         "DELETE FROM contacts WHERE id=?",
         (message_id,)
     )
 
     conn.commit()
-    new_cursor.close()
+    cursor.close()
 
     return {
+        "status": "success",
         "message": "Message Deleted Successfully!"
     }
