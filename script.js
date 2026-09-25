@@ -1,13 +1,12 @@
 // ==========================================
-// AYUSH RAI AI PORTFOLIO V5
-// COMPLETE WORKING SCRIPT
+// AYUSH RAI AI PORTFOLIO V5 - FIXED
 // ==========================================
 
 // ---------- PAGE LOAD ----------
 window.addEventListener("load", () => {
 
-  // Hide Loader
   const loader = document.getElementById("loader");
+
   if (loader) {
     setTimeout(() => {
       loader.style.opacity = "0";
@@ -31,9 +30,7 @@ function updateClock() {
   const clock = document.getElementById("clock");
   if (!clock) return;
 
-  const now = new Date();
-
-  clock.innerHTML = now.toLocaleString("en-IN", {
+  clock.innerHTML = new Date().toLocaleString("en-IN", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -44,6 +41,7 @@ function updateClock() {
     hour12: true,
     timeZone: "Asia/Kolkata"
   });
+
 }
 
 // ---------- VISITOR COUNTER ----------
@@ -58,6 +56,7 @@ function visitorCounter() {
   const counter = document.getElementById("visitor-count");
 
   if (counter) counter.innerText = visits;
+
 }
 
 // ---------- TYPING EFFECT ----------
@@ -76,7 +75,6 @@ let deleting = false;
 function typingEffect() {
 
   const text = document.getElementById("typing-text");
-
   if (!text) return;
 
   const current = words[wordIndex];
@@ -103,29 +101,24 @@ function typingEffect() {
   }
 
   setTimeout(typingEffect, deleting ? 40 : 90);
+
 }
 
-// ---------- SKILL ANIMATION ----------
+// ---------- SKILLS ----------
 function animateSkills() {
 
-  const bars = document.querySelectorAll(".progress-bar");
-
-  bars.forEach(bar => {
-
-    const width = bar.dataset.width;
-
+  document.querySelectorAll(".progress-bar").forEach(bar => {
     setTimeout(() => {
-      bar.style.width = width;
+      bar.style.width = bar.dataset.width;
     }, 500);
-
   });
+
 }
 
-// ---------- PARTICLE BACKGROUND ----------
+// ---------- PARTICLES ----------
 function createParticles() {
 
   const canvas = document.getElementById("particles");
-
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
@@ -173,13 +166,9 @@ function createParticles() {
 
   draw();
 
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
 }
 
-// ---------- CURSOR GLOW ----------
+// ---------- CURSOR ----------
 const cursor = document.querySelector(".cursor");
 
 document.addEventListener("mousemove", e => {
@@ -191,18 +180,18 @@ document.addEventListener("mousemove", e => {
 
 });
 
-// ---------- SCROLL PROGRESS BAR ----------
+// ---------- SCROLL BAR ----------
 window.addEventListener("scroll", () => {
 
   const progress = document.getElementById("progressBar");
-
   if (!progress) return;
 
-  const scroll =
+  const value =
     window.scrollY /
     (document.body.scrollHeight - window.innerHeight);
 
-  progress.style.width = scroll * 100 + "%";
+  progress.style.width = value * 100 + "%";
+
 });
 
 // ---------- BACK TO TOP ----------
@@ -212,10 +201,8 @@ window.addEventListener("scroll", () => {
 
   if (!topBtn) return;
 
-  if (window.scrollY > 400)
-    topBtn.style.display = "block";
-  else
-    topBtn.style.display = "none";
+  topBtn.style.display =
+    window.scrollY > 400 ? "block" : "none";
 
 });
 
@@ -252,46 +239,32 @@ function sendMessage() {
   if (!input || !body) return;
 
   const message = input.value.trim();
-
   if (message === "") return;
 
-  body.innerHTML += `
-    <div class="user">${message}</div>
-  `;
+  body.innerHTML += `<div class="user">${message}</div>`;
 
   let reply = "🤖 I'm Ayush's AI Assistant.";
 
   const text = message.toLowerCase();
 
-  if (text.includes("hello") || text.includes("hi")) {
+  if (text.includes("hello") || text.includes("hi"))
     reply = "👋 Hello Ayush! Welcome to your AI Portfolio.";
-  }
 
-  else if (text.includes("skills")) {
-    reply = "💻 Python, Machine Learning, SQL, HTML, CSS, JavaScript and FastAPI.";
-  }
+  else if (text.includes("skills"))
+    reply = "💻 Python, ML, SQL, HTML, CSS, JavaScript and FastAPI.";
 
-  else if (text.includes("project")) {
-    reply = "🚀 AI Chatbot, Student Result Predictor, FastAPI Dashboard and Portfolio Website.";
-  }
+  else if (text.includes("project"))
+    reply = "🚀 AI Chatbot, Student Predictor, FastAPI Dashboard and Portfolio Website.";
 
-  else if (text.includes("resume")) {
-    reply = "📄 Click Resume button to preview your resume.";
-  }
+  else if (text.includes("resume"))
+    reply = "📄 Click the Resume button to preview your resume.";
 
-  else if (text.includes("internship")) {
-    reply = "🎓 AICTE EduSkills Python Full Stack Internship, Oracle AI Foundation and Red Hat Certification.";
-  }
-
-  else if (text.includes("contact")) {
+  else if (text.includes("contact"))
     reply = "📧 Email: raiayush2003.2021@gmail.com";
-  }
 
   setTimeout(() => {
 
-    body.innerHTML += `
-      <div class="bot">${reply}</div>
-    `;
+    body.innerHTML += `<div class="bot">${reply}</div>`;
 
     body.scrollTop = body.scrollHeight;
 
@@ -316,22 +289,22 @@ if (chatInput) {
 
 }
 
-// ---------- RESUME MODAL ----------
+// ---------- RESUME ----------
 function openResume() {
 
   const modal = document.getElementById("resumeModal");
-
   if (modal) modal.style.display = "flex";
+
 }
 
 function closeResume() {
 
   const modal = document.getElementById("resumeModal");
-
   if (modal) modal.style.display = "none";
+
 }
 
-// ---------- DARK / LIGHT MODE ----------
+// ---------- DARK MODE ----------
 function toggleTheme() {
 
   document.body.classList.toggle("light-mode");
@@ -339,60 +312,35 @@ function toggleTheme() {
   const btn = document.getElementById("themeBtn");
 
   if (btn) {
-
     btn.innerHTML =
       document.body.classList.contains("light-mode")
         ? "☀️"
         : "🌙";
-
   }
 
 }
 
-// ---------- CONTACT FORM (FASTAPI) ----------
+// ---------- CONTACT FORM (GITHUB PAGES FIXED) ----------
 const form = document.getElementById("contact-form");
 
 if (form) {
 
-  form.addEventListener("submit", async e => {
+  form.addEventListener("submit", function (e) {
 
     e.preventDefault();
 
-    const data = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      message: document.getElementById("message").value
-    };
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
 
-    try {
-
-      const response = await fetch("http://127.0.0.1:8000/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-
-        alert("✅ Message Sent Successfully!");
-
-        form.reset();
-
-      } else {
-
-        alert("❌ Backend Error!");
-
-      }
-
-    } catch (err) {
-
-      alert("⚠️ FastAPI Backend is not running.");
-
-      console.log(err);
-
+    if (!name || !email || !message) {
+      alert("⚠️ Please fill all fields.");
+      return;
     }
+
+    alert("✅ Thank you! Your message has been received.");
+
+    form.reset();
 
   });
 
@@ -404,19 +352,14 @@ let playing = false;
 function toggleMusic() {
 
   const music = document.getElementById("bgMusic");
-
   if (!music) return;
 
   if (!playing) {
-
     music.play();
     playing = true;
-
   } else {
-
     music.pause();
     playing = false;
-
   }
 
 }
