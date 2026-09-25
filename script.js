@@ -381,3 +381,20 @@ function toggleMusic() {
 }
 
 console.log("✅ Ayush AI Portfolio V5 Loaded Successfully");
+
+// Disable Right Click
+document.addEventListener("contextmenu", function (e) {
+  e.preventDefault();
+});
+
+// Disable Inspect Shortcuts
+document.addEventListener("keydown", function (e) {
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) ||
+    (e.ctrlKey && e.key === "U")
+  ) {
+    e.preventDefault();
+    alert("⚠️ Inspect/View Source is disabled.");
+  }
+});
