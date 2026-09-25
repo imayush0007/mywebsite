@@ -321,31 +321,56 @@ function toggleTheme() {
 }
 
 // ---------- CONTACT FORM (GITHUB PAGES FIXED) ----------
+// ---------- CONTACT FORM (RENDER BACKEND LIVE) ----------
 const form = document.getElementById("contact-form");
 
 if (form) {
 
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", async function (e) {
 
     e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
+    const data = {
+      name: document.getElementById("name").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      message: document.getElementById("message").value.trim()
+    };
 
-    if (!name || !email || !message) {
+    if (!data.name || !data.email || !data.message) {
       alert("⚠️ Please fill all fields.");
       return;
     }
 
-    alert("✅ Thank you! Your message has been received.");
+    try {
 
-    form.reset();
+      const response = await fetch(
+        "https://ayush-ai-backend.onrender.com/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
+      );
+
+      if (response.ok) {
+        alert("✅ Message Sent Successfully!");
+        form.reset();
+      } else {
+        alert("❌ Failed to send message.");
+      }
+
+    } catch (err) {
+
+      console.error(err);
+      alert("⚠️ Server is temporarily unavailable. Please try again.");
+
+    }
 
   });
 
 }
-
 // ---------- MUSIC ----------
 let playing = false;
 
