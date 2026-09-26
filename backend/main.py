@@ -2,7 +2,7 @@
 # AYUSH RAI AI PORTFOLIO BACKEND (SECURE V9)
 # ==========================================
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
@@ -26,6 +26,10 @@ app.add_middleware(
 # ---------- Admin Login ----------
 ADMIN_USERNAME = "AyushAdmin"
 ADMIN_PASSWORD = "Ayush@8360"
+
+def verify_admin(password: str | None):
+    if password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 # ---------- Models ----------
 class Contact(BaseModel):
@@ -70,7 +74,9 @@ def save_contact(contact: Contact):
 
 # ---------- Get Messages ----------
 @app.get("/messages")
-def get_messages():
+def get_messages(x_admin_password: str = Header(None)):
+
+    verify_admin(x_admin_password)
 
     cursor = conn.cursor()
 
@@ -95,7 +101,12 @@ def get_messages():
 
 # ---------- Delete Message ----------
 @app.delete("/delete/{message_id}")
-def delete_message(message_id: int):
+def delete_message(
+    message_id: int,
+    x_admin_password: str = Header(None)
+):
+
+    verify_admin(x_admin_password)
 
     cursor = conn.cursor()
 
