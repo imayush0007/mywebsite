@@ -191,7 +191,11 @@ font-size:14px;
 
 <div class="login-box">
 
-<h1>🔒 Admin Dashboard</h1>
+<h1>🔒 Ayush Rai Private Dashboard</h1>
+
+<p style="color:#94A3B8;">
+Authorized access only.
+</p>
 
 <input id="username" placeholder="Username">
 
